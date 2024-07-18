@@ -31,15 +31,15 @@ func (p *Pow) Calculate(i int) int {
 func main() {
     var number = 2
 	p := pipeline.New[int, int]()
-	result := p.Send(number).Through(
-		pipeline.Pipe(func(value int, f func(int) int) int {
-            value *= value			
-            return f(value)    
-	    },
-		Pow{},
-    ).Then(func(value int) int {
-		return value
+	pipe1 := pipeline.Pipe(func(value int, f func(int) int) int {
+		value *= value
+		return f(value)
 	})
-	fmt.Println(result) // 16
+	pipe2 := Pow{}
+	dest := func(value int) int {
+		return value *= value
+	}
+	result := p.Send(number).Through(pipe1, pipe2).Then(dest)
+	fmt.Println(result) // 256
 }
 ```
