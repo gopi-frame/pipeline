@@ -39,7 +39,7 @@ func main() {
 		Pow{},
     ).Then(func(value int) int {
 		return value
-	}
+	})
 	fmt.Println(result) // 16
 }
 ```
